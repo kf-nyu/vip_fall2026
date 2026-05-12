@@ -187,61 +187,11 @@ LaTeX lives under **`docs/ieee/`**; **`bash docs/ieee/build_report.sh`** must co
 Presentation materials live under **`docs/slides/`**. The current manually edited deck is:
 
 - **`docs/slides/vip_spring_2026_final_kf2623.pptx`**
-- Speaker notes: **`docs/slides/vip_final_5_slides_template_speaker_notes.md`**
 
-PowerPoint files in this folder are treated as **manual deliverables**. If they are opened and edited in PowerPoint, do not regenerate them from helper scripts unless you first save a separate backup copy.
 
 ---
 
-## 8. Create a standalone `vip_fall2026` repository and push
-
-If you want this folder to become its **own GitHub repository**, use the commands below from your local machine. Replace `YOUR_GITHUB_USER` and the remote URL with your actual GitHub account/repository.
-
-### Option A: GitHub CLI (`gh`) recommended
-
-```bash
-cd /Users/kfunaki/Projects/vip/vip_fall2026
-git init
-git status
-git add .
-git commit -m "Initial VIP Fall 2026 hand-in package"
-gh repo create vip_fall2026 --private --source=. --remote=origin --push
-```
-
-Use `--public` instead of `--private` only if you are comfortable making the coursework repository public.
-
-### Option B: Create the GitHub repository in the browser first
-
-1. Create a new empty repository on GitHub named **`vip_fall2026`**.
-2. Do **not** initialize it with a README, license, or `.gitignore` if this local folder already has those files.
-3. Run:
-
-```bash
-cd /Users/kfunaki/Projects/vip/vip_fall2026
-git init
-git status
-git add .
-git commit -m "Initial VIP Fall 2026 hand-in package"
-git branch -M main
-git remote add origin git@github.com:YOUR_GITHUB_USER/vip_fall2026.git
-git push -u origin main
-```
-
-If you use HTTPS instead of SSH, use:
-
-```bash
-git remote add origin https://github.com/YOUR_GITHUB_USER/vip_fall2026.git
-```
-
-### Before pushing
-
-- Check **`git status`** and confirm that no private raw datasets, credentials, or oversized generated arrays are staged.
-- Keep real downloaded data out of Git unless the instructor explicitly requested it and redistribution is allowed.
-- The bundled placeholder files under **`data/*/README_NO_DATA.txt`** are safe to commit.
-
----
-
-## 9. Reproducibility
+## 8. Reproducibility
 
 - **Python ≥ 3.10** recommended; use script flags for seeds where available.
 - Run **downloads → preprocessing → training** in order; do **not** refit scalers on the full sample before splitting inside each script’s train/validation logic.
@@ -249,7 +199,7 @@ git remote add origin https://github.com/YOUR_GITHUB_USER/vip_fall2026.git
 
 ---
 
-## 10. Ethics, data compliance, references, license
+## 9. Ethics, data compliance, references, license
 
 Academic / VIP coursework only — **not** investment advice or a production trading system.
 
