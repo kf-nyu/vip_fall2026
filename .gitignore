@@ -1,0 +1,19 @@
+# Python
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.DS_Store
+
+# LaTeX / PDF outputs under repository docs/
+docs/ieee/
+docs/*.csv
+
+#local memo files
+MEMO.md
+LAB_REPORT_LOG.md
+# bayes_mcmc_wheat_run_log.md
+

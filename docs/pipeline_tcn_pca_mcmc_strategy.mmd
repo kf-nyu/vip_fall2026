@@ -1,0 +1,54 @@
+---
+config:
+  theme: neutral
+  flowchart:
+    nodeSpacing: 72
+    rankSpacing: 64
+    padding: 24
+    diagramPadding: 8
+  themeVariables:
+    fontSize: 22px
+    fontFamily: ''
+  layout: fixed
+---
+flowchart TB
+ subgraph inputs["Daily inputs"]
+        W["Wheat OHLCV +<br>engineered features"]
+        X["Cross-asset 1d log-returns<br>corn soy UUP CAD"]
+        FRED[("Optional FRED legacy<br>BAYES_DESIGN=fred_macro")]
+  end
+ subgraph tcn_pca["TCN + PCA — default<br>Table V feed"]
+    direction LR
+        SC["Scaler + PCA train+val"]
+        WIN["Sliding windows L × K<br>PCA coords"]
+        TCN["TCNClassifier"]
+        PUP["predict_proba → p_hat<br>on holdout"]
+  end
+ subgraph bayes["Bayesian flat logit —<br>wheat PCA default"]
+    direction LR
+        SAM["Same scaler+PCA as<br>TCN_PCA_WHEAT_ONLY"]
+        FLAT["Flatten L × K window<br>per row"]
+        NUTS["PyMC NUTS + inner-val h*<br>+ refit"]
+        PMBAR["Posterior-mean p_bar"]
+  end
+ subgraph strategy["Long-flat strategy<br>Sec. VIII"]
+    direction LR
+        WT["Weights: hurdle P≥h, P≥0.5,<br>P≥τ, momentum"]
+        RET["Realized simple returns<br>aligned"]
+        OUT["Proxy P&amp;L; toy bps; B&amp;H baseline;<br>wheat_strategy_holdout_validation.py"]
+  end
+    SC --> WIN
+    WIN --> TCN
+    TCN --> PUP
+    SAM --> FLAT
+    FLAT --> NUTS
+    NUTS --> PMBAR
+    RET --> OUT
+    W --> SC & SAM
+    X --> SC & SAM
+    FRED -.-> FLAT
+    PUP -- solid default --> WT
+    PUP -- same indices --> RET
+    PMBAR -. "optional STRATEGY_PANEL=bayes" .-> WT
+    PMBAR -. optional .-> RET
+    WT --> OUT
